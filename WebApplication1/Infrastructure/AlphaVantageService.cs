@@ -1,4 +1,4 @@
-﻿using FinancialVantage.Application;
+﻿using FinancialVantage.Application.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace FinancialVantage.Infrastructure

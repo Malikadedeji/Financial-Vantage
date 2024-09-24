@@ -1,4 +1,4 @@
-﻿using FinancialVantage.Application;
+﻿using FinancialVantage.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialVantage.API.Controllers

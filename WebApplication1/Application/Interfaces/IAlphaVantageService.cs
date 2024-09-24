@@ -1,4 +1,4 @@
-﻿namespace FinancialVantage.Application
+﻿namespace FinancialVantage.Application.Interfaces
 {
     public interface IAlphaVantageService
     {
