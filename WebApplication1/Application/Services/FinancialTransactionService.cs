@@ -44,10 +44,20 @@ namespace FinancialVantage.Application.Services
             return await _appDbContext.FinancialTransactions.FindAsync(transactionId);
         }
 
-        public async Task<IEnumerable<FinancialTransaction>> GetAllTransactionsForUserAsync(string userId)
+        //public async Task<IEnumerable<FinancialTransaction>> GetAllTransactionsForUserAsync(string userId)
+        //{
+        //    return await _appDbContext.FinancialTransactions
+        //        .Where(t => t.UserId == userId)
+        //        .ToListAsync();
+        //}
+
+        public async Task<IEnumerable<FinancialTransaction>> GetAllTransactionsForUserAsync(string userId, 
+            PaginationParameters paginationParams)
         {
             return await _appDbContext.FinancialTransactions
                 .Where(t => t.UserId == userId)
+                .Skip((paginationParams.PageNo =1) * paginationParams.PageSize)
+                .Take(paginationParams.PageSize)
                 .ToListAsync();
         }
     }

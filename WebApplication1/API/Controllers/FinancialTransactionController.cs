@@ -28,9 +28,9 @@ namespace FinancialVantage.API.Controllers
         }
 
         [HttpGet("user/{userId}")]
-        public async Task<IActionResult> GetUserTransactions(string userId)
+        public async Task<IActionResult> GetUserTransactions(string userId, [FromQuery] PaginationParameters paginationParams)
         {
-            var transactions = await _transactionService.GetAllTransactionsForUserAsync(userId);
+            var transactions = await _transactionService.GetAllTransactionsForUserAsync(userId, paginationParams);
             return Ok(transactions);
         }
 
