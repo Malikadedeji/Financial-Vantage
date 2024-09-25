@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinancialVantage.API.Controllers
 {
+    [ApiVersion("1.0")]
     [ApiController]
-    [Route("api/[Controller]")]
+    [Route("api/v{version:apiVersion}/[Controller]")]
     public class StocksController : ControllerBase
     {
         private readonly IAlphaVantageService _alphaVantageService;
