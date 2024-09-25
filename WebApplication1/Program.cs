@@ -1,10 +1,3 @@
-//using FinancialVantage;
-//using FinancialVantage.Application;
-//using FinancialVantage.Domain;
-//using FinancialVantage.Infrastructure;
-//using Microsoft.EntityFrameworkCore;
-
-
 using FinancialVantage;
 using FinancialVantage.Application.Interfaces;
 using FinancialVantage.Domain;
@@ -27,12 +20,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<AlphaVantageSettings>(builder.Configuration.GetSection("AlphaVantage"));
-
 builder.Services.AddHttpClient<IAlphaVantageService, AlphaVantageService>();
+builder.Services.AddScoped<IAlphaVantageService, AlphaVantageServiceWithCaching>();
+builder.Services.AddMemoryCache();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
-
 
 builder.Services.AddDefaultIdentity<ApplicationUser>()
     .AddEntityFrameworkStores<AppDbContext>();

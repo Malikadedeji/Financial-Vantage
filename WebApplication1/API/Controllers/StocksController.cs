@@ -17,8 +17,15 @@ namespace FinancialVantage.API.Controllers
         [HttpGet("{symbol}")]
         public async Task<IActionResult> GetStockData(string symbol)
         {
-            var data = await _alphaVantageService.GetStockDataAsync(symbol);
-            return Ok(data);
+            try
+            {
+                var data = await _alphaVantageService.GetStockDataAsync(symbol);
+                return Ok(data);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Error fetching stock data: {ex.Message}");
+            }
         }
     }
 }
