@@ -27,6 +27,7 @@ namespace FinancialVantage.API.Controllers
             return Ok(transaction);
         }
 
+        [Produces("application/json")]
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserTransactions(string userId, [FromQuery] PaginationParameters paginationParams)
         {
