@@ -8,6 +8,7 @@ namespace FinancialVantage.Application.Interfaces
         Task<FinancialTransaction> UpdateTransactionAsync(FinancialTransaction transaction);
         Task<bool> DeleteTransactionAsync(int transactionId);
         Task<FinancialTransaction> GetTransactionByIdAsync(int transactionId);
-        Task<IEnumerable<FinancialTransaction>> GetAllTransactionsForUserAsync(string userId);
+        Task<IEnumerable<FinancialTransaction>> GetAllTransactionsForUserAsync(string userId, 
+            PaginationParameters paginationParam);
     }
 }

@@ -9,6 +9,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Serilog;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
+
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -64,6 +68,15 @@ builder.Services.AddAuthentication(options =>
 });
 
 
+//Configuration for serilog
+Log.Logger = new LoggerConfiguration()
+         .WriteTo.Console()
+         .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+         .CreateLogger();
+
+builder.Host.UseSerilog();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +88,29 @@ if (app.Environment.IsDevelopment())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Financial API V1");
     });
 }
+
+app.UseExceptionHandler(appBuilder =>
+{
+    appBuilder.Run(async context =>
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        context.Response.ContentType = "application/json";
+
+        var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
+        if (contextFeature != null)
+        {
+            Log.Error($"Something went wrong: {contextFeature.Error}");
+
+            var errorResponse = new ErrorDetails
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Internal Server Error. Please try again later."
+            };
+
+            await context.Response.WriteAsJsonAsync(errorResponse);
+        }
+    });
+});
 
 app.UseHttpsRedirection();
 
